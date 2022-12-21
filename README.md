@@ -5,7 +5,8 @@ WArM-V is a simple and near real-time image processing pipeline to absorb the da
 ## Roadmap
 
 - [x] Create Git project.
-- [x] Run Open CV's `Hello World`.
+- [x] Run OpenCV's [`Hello World` tutorial](https://docs.opencv.org/4.x/db/df5/tutorial_linux_gcc_cmake.html)
+- [ ] Run OpenCV's [stitching sample](https://docs.opencv.org/4.x/d8/d19/tutorial_stitcher.html)
 - [ ] Build a [stitching pipeline](https://docs.opencv.org/4.x/d1/d46/group__stitching.html) (i.e. registration & compositing).
 - [ ] Extract a relationship between posts and vines for the entire dataset.
 - [ ] Compute the 1D location in meter of every post and vine along the row with respect to the first asset.
@@ -18,14 +19,19 @@ OpenCV (Open Source Computer Vision) is a free and open-source library of comput
 
 #### Install on macOS
 
-To build C++ project, you'll need a C++ compiler (e.g. GCC, Clang) and a build system (e.g. CMake)
+To build C++ project, a C++ compiler need to be installed. Clang is the default compiler for macOS
 
 ```bash
 sudo xcode-select --install
+```
+
+A proper build system like CMake will also come in handy. CMake is available through [Homebrew](https://brew.sh) package manager
+
+```bash
 brew install cmake
 ```
 
-Open CV's latest release is available on macOS (both Intel & Apple Silicon) through [Homebrew](https://brew.sh) package manager
+Open CV's latest release is available on macOS (both Intel & Apple Silicon) through [Homebrew](https://brew.sh) as well
 
 ```bash
 brew install opencv

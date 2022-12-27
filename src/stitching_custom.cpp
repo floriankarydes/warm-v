@@ -1,6 +1,7 @@
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/stitching.hpp"
+#include "opencv2/xfeatures2d.hpp"
 
 #include <iostream>
 
@@ -20,25 +21,54 @@ int main(int argc, char* argv[])
 	int retval = parseCmdArgs(argc, argv);
 	if (retval) return EXIT_FAILURE;
 
-	//![stitching]
 	Mat pano;
-	Ptr<Stitcher> stitcher = Stitcher::create(mode);
+	Ptr<Stitcher> stitcher = makePtr<Stitcher>();
 
+
+
+	// CONFIGURE REGISTRATION
+
+	// Resize to medium resolution
 	stitcher->setRegistrationResol(0.6);
-	stitcher->setSeamEstimationResol(0.1);
-	stitcher->setCompositingResol(cv::Stitcher::ORIG_RESOL);
-	stitcher->setPanoConfidenceThresh(1);
-	stitcher->setSeamFinder(makePtr<detail::GraphCutSeamFinder>(detail::GraphCutSeamFinderBase::COST_COLOR));
-	stitcher->setBlender(makePtr<detail::MultiBandBlender>(false));
-	stitcher->setFeaturesFinder(ORB::create());
-	stitcher->setInterpolationFlags(INTER_LINEAR);
+
+	// Find features
+	stitcher->setFeaturesFinder(xfeatures2d::SURF::create());
+
+	// Match features
+	stitcher->setFeaturesMatcher(makePtr<detail::BestOf2NearestMatcher>(false, 0.3));
+
+	// Estimate cameras parameters
 	stitcher->setEstimator(makePtr<detail::HomographyBasedEstimator>());
+
+	// Refine cameras parameters
+	stitcher->setPanoConfidenceThresh(0.3);
+	stitcher->setBundleAdjuster(makePtr<detail::BundleAdjusterRay>()); //! FAIL
+
+	// Apply wave correction to cameras parameters
 	stitcher->setWaveCorrection(true);
 	stitcher->setWaveCorrectKind(detail::WAVE_CORRECT_HORIZ);
-	stitcher->setFeaturesMatcher(makePtr<detail::BestOf2NearestMatcher>(false));
-	stitcher->setBundleAdjuster(makePtr<detail::BundleAdjusterRay>());
+
+
+	// CONFIGURE COMPOSITING
+
+	// Resize to low resolution
+	stitcher->setSeamEstimationResol(0.1);
+
+	// Wrap image
 	stitcher->setWarper(makePtr<SphericalWarper>());
+	stitcher->setInterpolationFlags(INTER_LINEAR);
+
+	// Compensate exposure
 	stitcher->setExposureCompensator(makePtr<detail::BlocksGainCompensator>());
+
+	// Find seams
+	stitcher->setSeamFinder(makePtr<detail::GraphCutSeamFinder>(detail::GraphCutSeamFinderBase::COST_COLOR));
+
+	// Compositing pano
+	stitcher->setCompositingResol(cv::Stitcher::ORIG_RESOL);
+	stitcher->setBlender(makePtr<detail::MultiBandBlender>(false));
+
+
 
 	Stitcher::Status status = stitcher->stitch(imgs, pano);
 
@@ -47,7 +77,6 @@ int main(int argc, char* argv[])
 			cout << "Can't stitch images, error code = " << int(status) << endl;
 			return EXIT_FAILURE;
 	}
-	//![stitching]
 
 	imwrite(result_name, pano);
 	cout << "stitching completed successfully\n" << result_name << " saved!";

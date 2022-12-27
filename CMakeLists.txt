@@ -21,3 +21,6 @@ target_link_libraries( stitching ${OpenCV_LIBS} )
 
 add_executable( stitching_detailed src/stitching_detailed.cpp )
 target_link_libraries( stitching_detailed ${OpenCV_LIBS} )
+
+add_executable( stitching_custom src/stitching_custom.cpp )
+target_link_libraries( stitching_custom ${OpenCV_LIBS} )

@@ -5,6 +5,10 @@
 		"*.tcc": "cpp",
 		"string_view": "cpp",
 		"functional": "cpp",
-		"variant": "cpp"
+		"variant": "cpp",
+		"deque": "cpp",
+		"list": "cpp",
+		"string": "cpp",
+		"vector": "cpp"
 	}
 }

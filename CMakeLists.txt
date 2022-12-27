@@ -13,9 +13,6 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 include_directories( include )
 
-add_executable( helloworld src/helloworld.cpp )
-target_link_libraries( helloworld ${OpenCV_LIBS} )
-
 add_executable( stitching src/stitching.cpp )
 target_link_libraries( stitching ${OpenCV_LIBS} )
 

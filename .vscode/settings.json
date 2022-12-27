@@ -1,3 +1,10 @@
 {
-	"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+	"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+	"files.associations": {
+		"LICENSE": "plaintext",
+		"*.tcc": "cpp",
+		"string_view": "cpp",
+		"functional": "cpp",
+		"variant": "cpp"
+	}
 }

@@ -18,3 +18,6 @@ target_link_libraries( helloworld ${OpenCV_LIBS} )
 
 add_executable( stitching src/stitching.cpp )
 target_link_libraries( stitching ${OpenCV_LIBS} )
+
+add_executable( stitching_detailed src/stitching_detailed.cpp )
+target_link_libraries( stitching_detailed ${OpenCV_LIBS} )

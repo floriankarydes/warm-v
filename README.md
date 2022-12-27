@@ -50,10 +50,12 @@ For other platforms, please head to [Open CV's documentation](https://docs.openc
 
   ```bash
   cd <path/to/warm-v>
+  rm -rf build
   mkdir build
   cd build
   cmake ..
   make
+  cd -
   ```
 
 - Test the executable

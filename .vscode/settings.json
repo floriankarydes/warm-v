@@ -9,6 +9,14 @@
 		"deque": "cpp",
 		"list": "cpp",
 		"string": "cpp",
-		"vector": "cpp"
-	}
+		"vector": "cpp",
+		"iosfwd": "cpp"
+	},
+	"markdownlint.config": {
+		"default": true,
+		"MD033": { "allowed_elements": ["img", "p", "h1"] },
+	},
+	"cSpell.words": [
+		"homography"
+	]
 }

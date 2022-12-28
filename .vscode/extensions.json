@@ -1,0 +1,17 @@
+{
+	"recommendations": [
+		"aaron-bond.better-comments",
+		"bierner.markdown-emoji",
+		"christian-kohler.path-intellisense",
+		"cschlosser.doxdocgen",
+		"davidanson.vscode-markdownlint",
+		"joaompinto.vscode-graphviz",
+		"mhutchie.git-graph",
+		"ms-vscode.cmake-tools",
+		"ms-vscode.cpptools",
+		"qwtel.sqlite-viewer",
+		"streetsidesoftware.code-spell-checker",
+		"visualstudioexptteam.vscodeintellicode",
+		"yzhang.markdown-all-in-one"
+	]
+}

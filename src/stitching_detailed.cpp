@@ -1,3 +1,5 @@
+// Copy from https://github.com/opencv/opencv/blob/4.x/samples/cpp/stitching_detailed.cpp
+
 #include <iostream>
 #include <fstream>
 #include <string>

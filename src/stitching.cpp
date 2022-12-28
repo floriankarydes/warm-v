@@ -1,3 +1,5 @@
+// Copy from https://github.com/opencv/opencv/blob/4.x/samples/cpp/stitching.cpp
+
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/stitching.hpp"

@@ -9,7 +9,7 @@ WArM-V is image processing pipeline to absorb photos collected in vineyards to c
 
 ## Roadmap
 
-- [ ] Design a pipeline to absorb the data and create a digital twin of the vine row.
+- [x] Design a high-level pipeline to absorb the data and create a digital twin of the vine row.
 - [x] Get started with [Open CV](https://opencv.org) and the [stitching sample](https://docs.opencv.org/4.x/d8/d19/tutorial_stitcher.html)
 - [ ] Build a first [stitching pipeline](https://docs.opencv.org/4.x/d1/d46/group__stitching.html) (i.e. image alignment & composition) for vineyard images.
 - [ ] Develop the designed processing pipeline.
@@ -42,11 +42,33 @@ Actually, it can start processing a new image before having fully processed the 
 
 ### Image Alignment
 
-📝 TODO
+Image alignment, also known as image registration, is the process of aligning two or more images of the same scene taken at different times, from different viewpoints, or using different sensors. Image alignment is often used to combine multiple images into a single composite image, or to compare images to identify changes or differences.
+
+In this project, image alignment is used to estimate the relative position of the object detected is different images. There are several techniques for aligning images. Based on the nature of the images and the goals of the alignment process, feature-based alignment seems like a good option. This method involves identifying features in the images, such as corners or edges, and using these features to determine the transformation needed to align the images. This transformation is called homography.
+
+In particular, for each new image captured by the camera, the pipeline estimate the homography with respect to the previous image with the following steps :
+
+1. **Resize images** : reduce the two images size to reduce the computation cost of the following steps.
+2. **Find features** : detect features in the two images using [SURF](https://medium.com/data-breach/introduction-to-surf-speeded-up-robust-features-c7396d6e7c4e) (Speeded up robust features) algorithm.
+3. **Match features** : finds two best matches for each feature and leaves the best one only if the
+ratio between descriptor distances is greater than a confidence threshold.
+4. **Guess homography** : make a first guess of the homography from previous image to new image based on the camera state estimate (i.e. GPS readings, kinematics integration and previous camera parameters).
+5. **Estimate homography** : starting from the guess, use pairwise matches in images to estimate the homography & camera parameters (camera parameters are used to pass from camera states to homography).
 
 ### State Estimation
 
-State estimation can help further increase the performance of the image alignment algorithm by providing a first guess on the homography.
+[State estimation](https://en.wikipedia.org/wiki/State_observer) can help increase the quality of the image alignment by providing a first guess on the homography to initialize the algorithm.
+
+State estimation is the process of estimating the current state of a system, based on a set of measurements or observations. It is a common problem in many fields, including control systems, robotics, and signal processing.
+
+In particular, the states of interest here would be the relative position & orientation of the camera with respect to its initial state (i.e. state at the first capture). On each new capture, the state estimator fuse the new GPS measurement with the expected state of the model to provide a new state estimate. This allows to account for change in velocity of the tractor & filter out GPS errors.
+
+Expected state is obtained by updating a state model over time. A simplistic state model for the tractor can be design as follow
+
+- Camera moves on a straight axis parallel to the vine row vertical plane and included in the camera horizontal plane.
+- Virtual kinetic friction force is applied so that linear velocity cannot go above 1m/s.
+
+Note that mounting a (very cheap) MEMS-based IMU (Microelectromechanical Systems based Inertial Measurement Unit) could help us estimate the full 6DoF state of the tractor. This would greatly improve the quality of the estimate and alleviate the need for the above assumptions. This would also support multi-rows positioning.
 
 ## Getting Started
 
